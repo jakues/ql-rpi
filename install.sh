@@ -54,71 +54,18 @@ sudo curl -o /usr/local/bin/Q https://raw.githubusercontent.com/jakues/ql-rpi/ma
 sudo chmod +x /usr/local/bin/Q
 }
 
-zram() {
-#source : https://github.com/jmcerrejon/PiKISS/blob/master/scripts/tweaks/zram.sh
-set -e
-free -wth
-
-enableZRAM() {
-	echo -e "\nEnabling ZRAM...\n"
-	cat <<\EOF >/tmp/zram
-#!/bin/bash
-CORES=$(nproc --all)
-modprobe zram num_devices=${CORES}
-swapoff -a
-SIZE=$(( ($(free | grep -e "^Mem:" | awk '{print $2}') / ${CORES}) * 1024 ))
-CORE=0
-while [ ${CORE} -lt ${CORES} ]; do
-  echo ${SIZE} > /sys/block/zram${CORE}/disksize
-  mkswap /dev/zram${CORE} > /dev/null
-  swapon -p 5 /dev/zram${CORE}
-  (( CORE += 1 ))
-done
-EOF
-	chmod +x /tmp/zram
-	sudo mv /tmp/zram /etc/zram
-	sudo /etc/zram
-	if [ "$(grep -c zram /etc/rc.local)" -eq 0 ]; then
-		sudo sed -i 's_^exit 0$_/etc/zram\nexit 0_' /etc/rc.local
-	fi
+setup() {
+sudo sed "/rootwait/cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 rootwait/" /boot/cmdline.txt
 }
 
-removeZRAM() {
-	echo -e "\nRemoving ZRAM...\n"
-	CORES=$(nproc --all)
-	CORE=0
-	while [ ${CORE} -lt "${CORES}" ]; do
-		sudo swapoff /dev/zram${CORE}
-		((CORE += 1))
-	done
-	wait
-	sleep .5
-	sudo modprobe --remove zram
-	sudo sed -i '/zram/d' /etc/rc.local
-	sudo rm /etc/zram
-	sudo /etc/init.d/dphys-swapfile stop >/dev/null
-	sudo /etc/init.d/dphys-swapfile start >/dev/null
-}
-
-if [ -e /etc/zram ]; then
-	echo
-	read -p "ZRAM already installed. Remove it (y/N)? " response
-	if [[ $response =~ [Yy] ]]; then
-		removeZRAM
-	fi
-else
-	echo
-	read -p "ZRAM is not present. Enable it (y/N)? " response
-	if [[ $response =~ [Yy] ]]; then
-		enableZRAM
-	fi
-fi
-
-echo
-free -wth
-echo
-read -p "Done!. Press [Enter] to come back to the menu..."
-#source : https://github.com/jmcerrejon/PiKISS/blob/master/scripts/tweaks/zram.sh
+reboot() {
+read -p "Reboot now ? [Y/y/N/n]" -n 1 -r
+ if [[ ! $REPLY =~ ^[Yy]$ ]]
+   then
+     exit 1
+ else
+     reboot
+ fi
 }
 
 #Checking if user run on rpi
@@ -137,10 +84,11 @@ if [[ "${PI_MODEL}" == *"Raspberry Pi"* ]]; then
   onboot
   reload
   script
+  setup
   clear
-  zram
   Q --help
   Q --about
+  reboot
 else
   echo "[!] This is not a Raspberry Pi. Quitting!"
   exit 1
