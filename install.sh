@@ -58,16 +58,6 @@ setup() {
 sudo sed "/rootwait/cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 rootwait/" /boot/cmdline.txt
 }
 
-reboot() {
-read -p "Reboot now ? [Y/y/N/n]" -n 1 -r
- if [[ ! $REPLY =~ ^[Yy]$ ]]
-   then
-     exit 1
- else
-     reboot
- fi
-}
-
 #Checking if user run on rpi
 HOST_ARCH=$(uname -m)
 if [ "${HOST_ARCH}" != "armv7l" ] && [ "${HOST_ARCH}" != "aarch64" ]; then
@@ -84,11 +74,10 @@ if [[ "${PI_MODEL}" == *"Raspberry Pi"* ]]; then
   onboot
   reload
   script
-  setup
+#  setup
   clear
   Q --help
   Q --about
-  reboot
 else
   echo "[!] This is not a Raspberry Pi. Quitting!"
   exit 1

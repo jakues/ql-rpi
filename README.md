@@ -9,6 +9,7 @@ It automatically downloads and installs the following packages:
 * Qlauncher (Latest)
 
 # [ Prerequisites ]
+
 The installation scripts require the following:
 
 * The machine operating system Raspberry Pi OS.
@@ -16,7 +17,15 @@ The installation scripts require the following:
 * Manually open port via your router
 
 # [ Install ]
-use this command if you're haven't installed Qlauncher before
+
+  * First do this command to install qlauncher
+    * `curl -sSL https://raw.githubusercontent.com/jakues/ql-rpi/master/install.sh | bash`
+  * Then open `/boot/cmdline.txt`
+    * `sudo nano /boot/cmdline.txt`
+  * Add this text after `fsck.repair=yes` and before `rootwait`
+    * `group_enable=cpuset cgroup_enable=memory cgroup_memory=1`
+  * Then reboot it to see effects
+    * `sudo reboot`
 ```
 curl -sSL https://raw.githubusercontent.com/jakues/ql-rpi/master/install.sh | bash
 ```
