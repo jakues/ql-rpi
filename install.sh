@@ -12,8 +12,8 @@ tools() {
 	echo -e "\033[1;32m	[+] Updating Package...\033[1;37m"
 	sudo apt update -y
 	sudo apt upgrade -y
-	sudo apt install curl net-tools nmap dmidecode lolcat -y
-	sudo curl -o ql.tar.gz https://github.com/poseidon-network/qlauncher-linux/releases/latest/download/ql-linux.tar.gz
+	sudo apt install curl wget net-tools nmap dmidecode lolcat -y
+	wget https://github.com/poseidon-network/qlauncher-linux/releases/latest/download/ql-linux.tar.gz -O ql.tar.gz
 }
 
 docker() {
@@ -42,7 +42,6 @@ RemainAfterExit=yes
 [Install]
 WantedBy=multi-user.target
 EOF
-
 }
 
 reload() {
@@ -140,7 +139,6 @@ if [[ "${PI_MODEL}" == *"Raspberry Pi"* ]]; then
   script
   clear
   zram
-  clear
   Q --help
   Q --about
 else

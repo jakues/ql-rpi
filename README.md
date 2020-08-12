@@ -18,7 +18,7 @@ The installation scripts require the following:
 # [ Install ]
 use this command if you're haven't installed Qlauncher before
 ```
-curl -sSL https://raw.githubusercontent.com/jakues/ql-rpi/master/install.sh | sh
+curl -sSL https://raw.githubusercontent.com/jakues/ql-rpi/master/install.sh | bash
 ```
 
 
