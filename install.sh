@@ -129,7 +129,7 @@ if [ "${HOST_ARCH}" != "armv7l" ] && [ "${HOST_ARCH}" != "aarch64" ]; then
   exit 1
 fi
 
-PI_MODEL=$(grep ^Model /proc/cpuinfo  | cut -d':' -f2- | sed 's/ R/R/')
+PI_MODEL=$(cat /proc/device-tree/model)
 if [[ "${PI_MODEL}" == *"Raspberry Pi"* ]]; then
   info
   tools
