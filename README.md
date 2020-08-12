@@ -26,9 +26,6 @@ The installation scripts require the following:
     * `group_enable=cpuset cgroup_enable=memory cgroup_memory=1`
   * Then reboot it to see effects
     * `sudo reboot`
-```
-curl -sSL https://raw.githubusercontent.com/jakues/ql-rpi/master/install.sh | bash
-```
 
 
 # [ Uninstall ]
