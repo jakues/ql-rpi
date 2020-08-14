@@ -12,7 +12,7 @@ It automatically downloads and installs the following packages:
 
 The installation scripts require the following:
 
-* The Raspberry Pi 2, 3, or 4 with operating system Raspberry Pi OS.
+* The Raspberry Pi 4B with operating system Raspberry Pi OS.
 * Run as pi user
 * Manually open port via your router
 
