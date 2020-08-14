@@ -12,8 +12,9 @@ tools() {
 	echo -e "\033[1;32m	[+] Updating Package...\033[1;37m"
 	sudo apt update -y
 	sudo apt upgrade -y
-	sudo apt install curl wget net-tools nmap dmidecode lolcat -y
-	wget https://github.com/poseidon-network/qlauncher-linux/releases/latest/download/ql-linux.tar.gz -O ql.tar.gz
+	echo -e "\033[1;32m     [+] Installing Requirements...\033[1;37m"
+	sudo apt install curl wget nano net-tools nmap dmidecode lolcat -y > sudo /dev/null 2>&1 &
+	wget https://github.com/poseidon-network/qlauncher-linux/releases/latest/download/ql-linux.tar.gz -O ql.tar.gz > sudo /dev/null 2>&1 &
 }
 
 docker() {
@@ -26,8 +27,8 @@ docker() {
 ql() {
 	echo
 	echo -e "\033[1;32m     [+] Installing qlauncher...\033[1;37m"
-	mkdir /home/pi/qlauncher
-	tar -vxzf ql.tar.gz -C /home/pi/qlauncher
+	mkdir /home/pi/qlauncher > sudo /dev/null 2>&1 &
+	tar -vxzf ql.tar.gz -C /home/pi/qlauncher > sudo /dev/null 2>&1 &
 }
 
 onboot() {
@@ -54,10 +55,6 @@ sudo curl -o /usr/local/bin/Q https://raw.githubusercontent.com/jakues/ql-rpi/ma
 sudo chmod +x /usr/local/bin/Q
 }
 
-setup() {
-sudo sed "/rootwait/cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 rootwait/" /boot/cmdline.txt
-}
-
 #Checking if user run on rpi
 HOST_ARCH=$(uname -m)
 if [ "${HOST_ARCH}" != "armv7l" ] && [ "${HOST_ARCH}" != "aarch64" ]; then
@@ -74,7 +71,6 @@ if [[ "${PI_MODEL}" == *"Raspberry Pi"* ]]; then
   onboot
   reload
   script
-#  setup
   clear
   Q --help
   Q --about

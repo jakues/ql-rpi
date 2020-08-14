@@ -12,7 +12,7 @@ It automatically downloads and installs the following packages:
 
 The installation scripts require the following:
 
-* The machine operating system Raspberry Pi OS.
+* The Raspberry Pi 2, 3, or 4 with operating system Raspberry Pi OS.
 * Run as pi user
 * Manually open port via your router
 
@@ -23,10 +23,14 @@ The installation scripts require the following:
   * Then open `/boot/cmdline.txt`
     * `sudo nano /boot/cmdline.txt`
   * Add this text after `fsck.repair=yes` and before `rootwait`
-    * `group_enable=cpuset cgroup_enable=memory cgroup_memory=1`
-  * Then reboot it to see effects
+    * `cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1`
+  * Save it `CTRL+X`
+  * Then reboot raspberry to see effects
     * `sudo reboot`
 
+  * P.S
+    * You must add `cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1` to the end of the existing line. if you add it at the bottom of file in a new line it doesn't work.
+    * If you using the ubuntu server on raspberry pi, you must modify `/boot/firmware/nobtcmd.txt` instead of `/boot/cmdline.txt`
 
 # [ Uninstall ]
 
