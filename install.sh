@@ -55,6 +55,16 @@ sudo curl -o /usr/local/bin/Q https://raw.githubusercontent.com/jakues/ql-rpi/ma
 sudo chmod +x /usr/local/bin/Q
 }
 
+cgroup_raspbian() {
+CMDLINE=/boot/cmdline.txt
+sudo sed -i -e 's/rootwait/cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 rootwait/' $CMDLINE
+}
+
+cgroup_ubuntu() {
+CMDLINE=/boot/firmware/cmdline.txt
+sudo sed -i -e 's/rootwait/cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 rootwait/' $CMDLINE
+}
+
 #Checking if user run on rpi
 HOST_ARCH=$(uname -m)
 if [ "${HOST_ARCH}" != "armv7l" ] && [ "${HOST_ARCH}" != "aarch64" ]; then
@@ -62,6 +72,7 @@ if [ "${HOST_ARCH}" != "armv7l" ] && [ "${HOST_ARCH}" != "aarch64" ]; then
   exit 1
 fi
 
+#shoot
 PI_MODEL=$(cat /proc/device-tree/model)
 if [[ "${PI_MODEL}" == *"Raspberry Pi 4"* ]]; then
   info
@@ -77,4 +88,13 @@ if [[ "${PI_MODEL}" == *"Raspberry Pi 4"* ]]; then
 else
   echo -e "\033[1;31m     [!] This is not a Raspberry Pi 4."
   exit 1
+fi
+
+#enable cgroup
+if ls /boot/cmdline.txt > /dev/null 2>&1; then
+    cgroup_raspbian
+elif ls /boot/firmware/cmdline.txt > /dev/null 2>&1; then
+    cgroup_ubuntu
+else
+    echo -e "\033[1;33m     [!] Cannot enable cgroup please enable it manually"
 fi
