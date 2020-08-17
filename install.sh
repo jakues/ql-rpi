@@ -58,12 +58,12 @@ sudo chmod +x /usr/local/bin/Q
 #Checking if user run on rpi
 HOST_ARCH=$(uname -m)
 if [ "${HOST_ARCH}" != "armv7l" ] && [ "${HOST_ARCH}" != "aarch64" ]; then
-  echo "[!] This script is only intended to run on ARM devices."
+  echo -e "\033[1;31m     [!] This script is only intended to run on ARM devices."
   exit 1
 fi
 
 PI_MODEL=$(cat /proc/device-tree/model)
-if [[ "${PI_MODEL}" == *"Raspberry Pi"* ]]; then
+if [[ "${PI_MODEL}" == *"Raspberry Pi 4"* ]]; then
   info
   tools
   docker
@@ -75,6 +75,6 @@ if [[ "${PI_MODEL}" == *"Raspberry Pi"* ]]; then
   Q --help
   Q --about
 else
-  echo "[!] This is not a Raspberry Pi. Quitting!"
+  echo -e "\033[1;31m     [!] This is not a Raspberry Pi 4."
   exit 1
 fi
