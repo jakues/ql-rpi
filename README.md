@@ -13,7 +13,6 @@ It automatically downloads and installs the following packages:
 The installation scripts require the following:
 
 * The Raspberry Pi 4B with operating system [Raspberry Pi OS](https://downloads.raspberrypi.org/raspios_lite_armhf_latest) or [Ubuntu server 32 bit](https://ubuntu.com/download/raspberry-pi).
-* Run as **pi** user
 * Manually open port via your router
 
 # [ Install ]

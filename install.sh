@@ -27,8 +27,9 @@ docker() {
 ql() {
 	echo
 	echo -e "\033[1;32m     [+] Installing qlauncher...\033[1;37m"
-	mkdir /home/pi/qlauncher > sudo /dev/null 2>&1 &
-	tar -vxzf ql.tar.gz -C /home/pi/qlauncher > sudo /dev/null 2>&1 &
+	sudo mkdir /etc/ql > sudo /dev/null 2>&1 &
+	sudo tar -vxzf ql.tar.gz -C /etc/ql > sudo /dev/null 2>&1 &
+	rm ql.tar.gz
 }
 
 onboot() {
@@ -37,8 +38,8 @@ sudo cat > /etc/systemd/system/qlauncher.service << EOF
 Description=qlauncher.service
 [Service]
 Type=simple
-ExecStart=/home/pi/qlauncher/qlauncher.sh start
-ExecStop=/home/pi/qlauncher/qlauncher.sh stop
+ExecStart=/etc/ql/qlauncher.sh start
+ExecStop=/etc/ql/qlauncher.sh stop
 RemainAfterExit=yes
 [Install]
 WantedBy=multi-user.target
@@ -67,7 +68,7 @@ sudo sed -i -e 's/rootwait/cgroup_enable=cpuset cgroup_enable=memory cgroup_memo
 
 #Checking if user run on rpi
 HOST_ARCH=$(uname -m)
-if [ "${HOST_ARCH}" != "armv7l" ] && [ "${HOST_ARCH}" != "aarch64" ]; then
+if [ "${HOST_ARCH}" != "armv7l" ]; then
   echo -e "\033[1;31m     [!] This script is only intended to run on ARM devices."
   exit 1
 fi

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIRQL="/home/pi/qlauncher"
+DIRQL="/etc/qlauncher"
 QLS="$DIRQL/qlauncher.sh"
 
 function help ()
@@ -126,13 +126,13 @@ function restart ()
       echo -e "\033[0;33m"
       read -p "Are you want to check it ? [Y/y/N/n]" -n 1 -r
       echo -e "\033[0;37m"
- if [[ ! $REPLY =~ ^[Yy]$ ]]
-   then
-   exit 1
- else
-   clear
-   status | lolcat
- fi
+ 	if [[ ! $REPLY =~ ^[Yy]$ ]]
+   		then
+		exit 1
+	else
+   		clear
+		status | lolcat
+	fi
 }
 
 function check ()
@@ -196,7 +196,6 @@ function cpu ()
 
 function update ()
 {
-   apt-get update -y
    sudo curl -o /usr/local/bin/Q https://raw.githubusercontent.com/jakues/ql-rpi/master/conf/Q
    sudo chmod +x /usr/local/bin/Q
    clear
