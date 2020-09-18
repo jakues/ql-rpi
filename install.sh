@@ -75,7 +75,7 @@ fi
 
 #shoot
 PI_MODEL=$(cat /proc/device-tree/model)
-if [[ "${PI_MODEL}" == *"Raspberry Pi 4"* ]]; then
+if [[ "${PI_MODEL}" == *"Raspberry Pi"* ]]; then
   info
   tools
   docker
@@ -87,7 +87,7 @@ if [[ "${PI_MODEL}" == *"Raspberry Pi 4"* ]]; then
   Q --help
   Q --about
 else
-  echo -e "\033[1;31m     [!] This is not a Raspberry Pi 4."
+  echo -e "\033[1;31m     [!] This is not a Raspberry Pi"
   exit 1
 fi
 

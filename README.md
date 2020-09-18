@@ -12,15 +12,16 @@ It automatically downloads and installs the following packages:
 
 The installation scripts require the following:
 
-* The Raspberry Pi 4B with operating system [Raspberry Pi OS](https://downloads.raspberrypi.org/raspios_lite_armhf_latest) or [Ubuntu server 32 bit](https://ubuntu.com/download/raspberry-pi).
+* The Raspberry Pi 2B, 2B+, 3B, 3B+ and 4B with operating system [Raspberry Pi OS](https://downloads.raspberrypi.org/raspios_lite_armhf_latest) or [Ubuntu server 32 bit](https://ubuntu.com/download/raspberry-pi).
 * Manually open port via your router
 
 # [ Install ]
 
   * First do this command to one hit installing qlauncher
     * `curl -sSL https://raw.githubusercontent.com/jakues/ql-rpi/master/install.sh | bash`
-  * Then reboot raspberry to see effects
+  * Then reboot raspberry
     * `sudo reboot`
+  * Dont forget open port `443, 32440-32449` via your router 
 
 # [ Uninstall ]
 
