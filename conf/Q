@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIRQL="/etc/qlauncher"
+DIRQL="/etc/ql"
 QLS="$DIRQL/qlauncher.sh"
 
 function help ()
@@ -228,6 +228,18 @@ function hostname ()
  fi
 }
 
+function hwsn ()
+{
+ if [ "$(id -u)" != "0" ] ; then
+    echo "Sorry, you are not root user"
+    exit 1
+ fi
+    read -r -p "Enter new hwsn : " SN
+    echo $SN > /etc/qlauncher
+    echo $SN > /etc/machine-id
+    Q -r
+}
+
 function about ()
 {
  echo -e "\n\033[1;36m@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\033[1;37m"
@@ -280,6 +292,9 @@ update
 ;;
  -n|--n|-hostname|--hostname)
  hostname
+;;
+ -sn|--sn)
+hwsn
 ;;
  -w|--w|-about|--about)
 about

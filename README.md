@@ -18,7 +18,7 @@ The installation scripts require the following:
 # [ Install ]
 
   * First do this command to one hit installing qlauncher
-    * `curl -sSL https://raw.githubusercontent.com/jakues/ql-rpi/master/install.sh | bash`
+    * `curl -sSL https://git.io/JUEkH | bash`
   * Then reboot raspberry
     * `sudo reboot`
   * Dont forget open port `443, 32440-32449` via your router 
@@ -35,7 +35,6 @@ coming soon
 
 if you just done install Qlauncher with [this instruction](https://github.com/poseidon-network/qlauncher-linux) you can use this script for easily control Qlauncher but require [lolcat installed](https://github.com/busyloop/lolcat)
 ```
-sudo curl -o /usr/local/bin/Q https://raw.githubusercontent.com/jakues/ql-rpi/master/conf/Q
-sudo chmod +x /usr/local/bin/Q
-Q --help
+sudo curl -o /usr/local/bin/Q https://git.io/JUEkQ ; sudo chmod +x /usr/local/bin/Q
+Q --help #show usage
 ```
