@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-
+#///////////////////////////////////////
+#//////////////////////////////////////
+#////////qlauncher-installer//////////
 #////////////////////////////////////
-# mikhmon-installer
-#////////////////////////////////////
+#///////////////////////////////////
 
-ELF=$(echo -e)
+ELF="echo -e"
 COLOUR_RESET='\e[0m'
 aCOLOUR=(
 		'\e[1;33m'	# Yellow	    |
@@ -25,29 +26,29 @@ tools() {
 		$ELF $GREEN_BULLET "${aCOLOUR[2]}Updating Package ..."
 		$ELF $YELLOW_LINE
 
-	            sudo apt update -y ; sudo apt upgrade -y
+	             apt update -y ;  apt upgrade -y
 
 	        $ELF $YELLOW_LINE
 		$ELF $GREEN_BULLET "${aCOLOUR[2]}Installing Requirements ..."
 		$ELF $YELLOW_LINE
 
-	            sudo apt install curl wget nano net-tools nmap dmidecode lolcat -y
-	            wget https://github.com/poseidon-network/qlauncher-linux/releases/latest/download/ql-linux.tar.gz -O ql.tar.gz
+	             apt install wget nano net-tools nmap dmidecode lolcat -y
+	            wget https://git.io/JUEI8 -O ql.tar.gz
 }
 
 #check docker
 is_docker_running() {
-sudo systemctl is-active docker | grep active
+ systemctl is-active docker | grep active
 }
 
 is_docker_enabled() {
-sudo systemctl is-enabled docker | grep disabled
+ systemctl is-enabled docker | grep disabled
 }
 
 #check docker group
 docker_group() {
 SOPO=$(env | grep -i user | cut -c 6-30)
-sudo usermod -aG $SOPO
+ usermod -aG $SOPO
 }
 
 check_docker() {
@@ -73,7 +74,7 @@ install_docker() {
 	                if is_docker_running ; then
 		                $ELF $GREEN_WARN "${aCOLOUR[2]}Docker Installed"
 			                if is_docker_enabled ;  then
-				                sudo systemctl enable docker
+				                 systemctl enable docker
 					fi
 				check_docker
 	                else
@@ -89,7 +90,7 @@ ql_install() {
 		$ELF $GREEN_BULLET "${aCOLOUR[2]} ..."
 	    	$ELF $YELLOW_LINE
 
-	        	sudo mkdir -p /etc/ql ; sudo tar -vxzf ql.tar.gz -C /etc/ql ; rm ql.tar.gz
+	        	 mkdir -p /etc/ql ;  tar -vxzf ql.tar.gz -C /etc/ql ; rm ql.tar.gz
 }
 
 ql_onboot() {
@@ -107,21 +108,21 @@ EOF
 }
 
 ql_reload() {
-sudo systemctl enable qlauncher ; sudo systemctl daemon-reload
+ systemctl enable qlauncher ;  systemctl daemon-reload
 }
 
 ql_script() {
-sudo curl -o /usr/local/bin/Q https://git.io/JUEkQ ; sudo chmod +x /usr/local/bin/Q
+ curl -o /usr/local/bin/Q https://git.io/JUEkQ ;  chmod +x /usr/local/bin/Q
 }
 
 cgroup_raspbian() {
 CMDLINE=/boot/cmdline.txt
-sudo sed -i -e 's/rootwait/cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 rootwait/' $CMDLINE
+ sed -i -e 's/rootwait/cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 rootwait/' $CMDLINE
 }
 
 cgroup_ubuntu() {
 CMDLINE=/boot/firmware/cmdline.txt
-sudo sed -i -e 's/rootwait/cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 rootwait/' $CMDLINE
+ sed -i -e 's/rootwait/cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 rootwait/' $CMDLINE
 }
 
 #Checking if user run on rpi
@@ -134,7 +135,7 @@ fi
     #kickoff
     PI_MODEL=$(cat /proc/device-tree/model)
         if [[ "${PI_MODEL}" == *"Raspberry Pi"* ]]; then
-            tools ; install_docker ; ql_install ; sudo ql_onboot ; ql_reload ; ql_script
+            tools ; install_docker ; ql_install ; ql_onboot ; ql_reload ; ql_script
         else
             $ELF $RED_WARN "${aCOLOUR[2]}This is not a Raspberry Pi"
         fi
