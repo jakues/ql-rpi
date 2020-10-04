@@ -26,35 +26,36 @@ tools() {
 		$ELF $GREEN_BULLET "${aCOLOUR[2]}Updating Package ..."
 		$ELF $YELLOW_LINE
 
-	             apt update -y ;  apt upgrade -y
+	             sudo apt-get update -qq -y ;  sudo apt-get upgrade -qq -y ; sudo apt-get autoremove -qq -y
 
 	        $ELF $YELLOW_LINE
 		$ELF $GREEN_BULLET "${aCOLOUR[2]}Installing Requirements ..."
 		$ELF $YELLOW_LINE
 
-	             apt install wget nano net-tools nmap dmidecode lolcat -y
+	            sudo apt-get install wget nano net-tools nmap dmidecode lolcat -qq -y
 	            wget https://git.io/JUEI8 -O ql.tar.gz
 }
 
 #check docker
-is_docker_running() {
- systemctl is-active docker | grep active
+is_docker_installed() {
+ whereis docker | grep '/usr/bin/docker'
 }
 
 is_docker_enabled() {
- systemctl is-enabled docker | grep disabled
+ sudo systemctl is-enabled docker | grep disabled
 }
 
 #check docker group
 docker_group() {
 SOPO=$(env | grep -i user | cut -c 6-30)
- usermod -aG $SOPO
+ sudo usermod -aG $SOPO
 }
 
 check_docker() {
                 if [[ $(id -u) == "1000" ]] ; then
                     $ELF $RED_WARN "${aCOLOUR[2]}Non root detected"
 	                    if groups | grep docker ;  then
+				$ELF $GREEN_WARN "${aCOLOUR[2]}Detected docker already on groups"
 				$ELF $GREEN_WARN "${aCOLOUR[2]}OK"
 	                    else
                     		$ELF $RED_WARN "${aCOLOUR[2]}Docker not in the groups"
@@ -69,12 +70,10 @@ install_docker() {
 		    $ELF $GREEN_BULLET "${aCOLOUR[2]}Checking Docker ..."
 		    $ELF $YELLOW_LINE
 
-                SOPO=$(env | grep -i user | cut -c 6-30)
-
-	                if is_docker_running ; then
+	                if is_docker_installed ; then
 		                $ELF $GREEN_WARN "${aCOLOUR[2]}Docker Installed"
 			                if is_docker_enabled ;  then
-				                 systemctl enable docker
+					    sudo systemctl enable docker
 					fi
 				check_docker
 	                else
@@ -90,11 +89,11 @@ ql_install() {
 		$ELF $GREEN_BULLET "${aCOLOUR[2]} ..."
 	    	$ELF $YELLOW_LINE
 
-	        	 mkdir -p /etc/ql ;  tar -vxzf ql.tar.gz -C /etc/ql ; rm ql.tar.gz
+	        	sudo mkdir -p /etc/ql ;  sudo tar -vxzf ql.tar.gz -C /etc/ql ; rm ql.tar.gz
 }
 
 ql_onboot() {
-cat > /etc/systemd/system/qlauncher.service << EOF
+sudo bash -c 'cat > /etc/systemd/system/qlauncher.service' << EOF
 [Unit]
 Description=qlauncher.service
 [Service]
@@ -108,21 +107,21 @@ EOF
 }
 
 ql_reload() {
- systemctl enable qlauncher ;  systemctl daemon-reload
+ sudo systemctl enable qlauncher ; sudo systemctl daemon-reload
 }
 
 ql_script() {
- curl -o /usr/local/bin/Q https://git.io/JUEkQ ;  chmod +x /usr/local/bin/Q
+ sudo wget https://git.io/JUEkQ -O /usr/local/bin/Q ; sudo chmod +x /usr/local/bin/Q
 }
 
 cgroup_raspbian() {
 CMDLINE=/boot/cmdline.txt
- sed -i -e 's/rootwait/cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 rootwait/' $CMDLINE
+ sudo sed -i -e 's/rootwait/cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 rootwait/' $CMDLINE
 }
 
 cgroup_ubuntu() {
 CMDLINE=/boot/firmware/cmdline.txt
- sed -i -e 's/rootwait/cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 rootwait/' $CMDLINE
+ sudo sed -i -e 's/rootwait/cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 rootwait/' $CMDLINE
 }
 
 #Checking if user run on rpi
@@ -146,5 +145,6 @@ if ls /boot/cmdline.txt > /dev/null 2>&1; then
 elif ls /boot/firmware/cmdline.txt > /dev/null 2>&1; then
     cgroup_ubuntu
 else
-    $ELF $RED_WARN "${aCOLOUR[2]}Cannot enable cgroup please enable it manually"
+    $ELF $RED_WARN "${aCOLOUR[2]}Cannot enable cgroup."
+    $ELF $RED_WARN "${aCOLOUR[2]}Please enable it manually"
 fi

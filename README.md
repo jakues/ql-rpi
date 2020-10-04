@@ -35,6 +35,6 @@ coming soon
 
 if you just done install Qlauncher with [this instruction](https://github.com/poseidon-network/qlauncher-linux) you can use this script for easily control Qlauncher but require [lolcat installed](https://github.com/busyloop/lolcat)
 ```
-sudo curl -o /usr/local/bin/Q https://git.io/JUEkQ ; sudo chmod +x /usr/local/bin/Q
+sudo wget https://git.io/JUEkQ -O /usr/local/bin/Q ; sudo chmod +x /usr/local/bin/Q
 Q --help #show usage
 ```

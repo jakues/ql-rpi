@@ -196,10 +196,7 @@ function cpu ()
 
 function update ()
 {
-   sudo curl -o /usr/local/bin/Q https://raw.githubusercontent.com/jakues/ql-rpi/master/conf/Q
-   sudo chmod +x /usr/local/bin/Q
-   clear
-   about
+   sudo wget https://git.io/JUEkQ -O /usr/local/bin/Q ; sudo chmod +x /usr/local/bin/Q ; clear ; about
 }
 
 function hostname ()
